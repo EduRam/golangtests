@@ -1,6 +1,10 @@
 //
 // Source https://copyninja.info/tags/golang.html
 //
+// Compare with C version on book:
+// Computer Systems: A Programmer's Perspective (2nd Edition)
+// Pag 42 Chapter 2 Representing and Manipulating Information
+//
 package main
 
 import (
@@ -14,8 +18,8 @@ func CopyValueToByte(value interface{}) []byte {
 	var slice []byte
 
 	switch t := value.(type) {
-	case int32:
-		i := value.(int32)
+	case uint64:
+		i := value.(uint64)
 		valptr = uintptr(unsafe.Pointer(&i))
 		slice = make([]byte, unsafe.Sizeof(i))
 	case float32:
@@ -36,24 +40,30 @@ func CopyValueToByte(value interface{}) []byte {
 }
 
 func main() {
-	a := float32(-10.3)
-
-	floatbytes := CopyValueToByte(a)
-
+	valueUint64 := uint64(12345)
+	uint64bytes := CopyValueToByte(valueUint64)
 	fmt.Println("Float value as byte slice:")
-	for i := 0; i < len(floatbytes); i++ {
-		fmt.Printf("%x ", floatbytes[i])
+	for i := 0; i < len(uint64bytes); i++ {
+		fmt.Printf("%#2x ", uint64bytes[i])
 	}
-
 	fmt.Println()
 
-	b := new(float32)
-	bptr := uintptr(unsafe.Pointer(b))
-
-	for i := 0; i < len(floatbytes); i++ {
-		*(*byte)(unsafe.Pointer(bptr)) = floatbytes[i]
-		bptr++
+	valueFloat32 := float32(12345)
+	uint64bytes = CopyValueToByte(valueFloat32)
+	fmt.Println("Float value as byte slice:")
+	for i := 0; i < len(uint64bytes); i++ {
+		fmt.Printf("%#2x ", uint64bytes[i])
 	}
+	fmt.Println()
 
-	fmt.Printf("Byte value copied to float var: %f\n", *b)
+	// This block converts bytearray to type
+	//b := new(float32)
+	//bptr := uintptr(unsafe.Pointer(b))
+
+	//for i := 0; i < len(floatbytes); i++ {
+	//	*(*byte)(unsafe.Pointer(bptr)) = floatbytes[i]
+	//	bptr++
+	//}
+
+	//fmt.Printf("Byte value copied to float var: %f\n", *b)
 }
