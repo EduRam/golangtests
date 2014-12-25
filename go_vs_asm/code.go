@@ -2,9 +2,9 @@
 //
 package test
 
-var accum uint64 = 0
+var accum uint8 = 0
 
-func sum(x, y uint64) uint64 {
+func sum(x, y uint8) uint8 {
 	var t = x + y
 	accum += t
 	return t
