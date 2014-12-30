@@ -6,5 +6,6 @@ Examples from the book:
 
 ... adapted from Clang to Golang.
 
-The objective is to prove to myself that Go is a "systems language"!
+To understand what is being demonstrated, you have to buy the book!
+
 
