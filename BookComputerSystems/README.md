@@ -1,7 +1,7 @@
 Examples from the book:
 
-	Computer Systems (A Programmer's Perspective'), 2Ed
-	Randal_E._Bryant,_David_R._O'Hallaron
+	Computer Systems (A Programmer's Perspective), 2Ed
+	Randal Bryant, David O'Hallaron
 	Prentice Hall
 
 ... adapted from Clang to Golang.
