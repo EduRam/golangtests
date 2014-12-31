@@ -13,6 +13,8 @@ func main() {
 }
 
 /**
+Read this 1st "https://golang.org/doc/asm"
+
 [e@localhost 3.2.3]$ go tool 6g -S 3.2.3.main.go
 
 "".simple t=1 size=32 value=0 args=0x18 locals=0x0
