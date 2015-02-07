@@ -9,6 +9,7 @@ func main() {
 }
 
 /**
+Read this first "https://golang.org/doc/asm"
 
 [e@localhost ch3]$ go tool objdump ch3 > gobjdump.txt
 

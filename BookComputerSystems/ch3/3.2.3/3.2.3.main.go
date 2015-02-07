@@ -13,7 +13,7 @@ func main() {
 }
 
 /**
-Read this 1st "https://golang.org/doc/asm"
+Read this first "https://golang.org/doc/asm"
 
 [e@localhost 3.2.3]$ go tool 6g -S 3.2.3.main.go
 
@@ -23,7 +23,7 @@ Read this 1st "https://golang.org/doc/asm"
 	0x0000 00000 (3.2.3.main.go:4)	NOP	,
 	0x0000 00000 (3.2.3.main.go:4)	MOVQ	"".xxxxp+8(FP),CX
 	0x0005 00005 (3.2.3.main.go:4)	FUNCDATA	$0,gclocals·64b411f0f44be3f38c26e84fc3239091+0(SB)
-	0x0005 00005 (3.2.3.main.go:4)	FUNCDATA	$1,gclocals·3280bececceccd33cb74587feedb1f9f+0(SB)
+	0x0005 00005 (3.2.3.main.go:4)	FUNCDATA	$1,    +0(SB)
 	0x0005 00005 (3.2.3.main.go:5)	NOP	,
 	0x0005 00005 (3.2.3.main.go:5)	MOVQ	(CX),AX
 	0x0008 00008 (3.2.3.main.go:5)	MOVQ	"".yyyy+16(FP),BP
@@ -67,16 +67,17 @@ Read this 1st "https://golang.org/doc/asm"
 Disassembly of section .text:
 
 0000000000400c00 <main.main>:
+
   400c00:	48 83 ec 08          	sub    $0x8,%rsp	// find above "48 83 ec 08" and "SUBQ $8,SP"
-  400c04:	48 c7 04 24 01 00 00 	movq   $0x1,(%rsp)
+  400c04:	48 c7 04 24 01 00 00 	movq   $0x1,(%rsp)  // sub + movq == pushq. Descrement StackPointer SP by 8bytes ... Store value 1 on stack top
   400c0b:	00
   400c0c:	48 8d 1c 24          	lea    (%rsp),%rbx
   400c10:	48 89 d9             	mov    %rbx,%rcx
   400c13:	48 c7 c0 02 00 00 00 	mov    $0x2,%rax
   400c1a:	48 8b 1b             	mov    (%rbx),%rbx
   400c1d:	48 01 c3             	add    %rax,%rbx
-  400c20:	48 89 19             	mov    %rbx,(%rcx)
-  400c23:	48 83 c4 08          	add    $0x8,%rsp
+  400c20:	48 89 19             	mov    %rbx,(%rcx) // pop stack
+  400c23:	48 83 c4 08          	add    $0x8,%rsp   // pop stack
   400c27:	c3                   	retq
 
 */
