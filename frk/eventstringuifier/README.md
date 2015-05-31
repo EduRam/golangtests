@@ -1,6 +1,15 @@
-Parses this kind of string "[a=[b=c][d=e]]" into...
-EventName = a
-  EventAttr = b
-  EventValue = c
-  EventAttr = d
-  EventValue = e
+Parses this kind of string 
+
+```
+abc=[def=ghi][jkl=mno]]
+```
+
+into...
+
+```
+EventName = abc
+  EventAttr = def
+  EventValue = ghi
+  EventAttr = jkl
+  EventValue = mno
+```
