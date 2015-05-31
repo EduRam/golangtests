@@ -46,7 +46,6 @@ func start() error {
 	}
 
 	isToRunOnStartup, err = strconv.ParseBool(value)
-	fmt.Println("isToRunOnStartup=", isToRunOnStartup)
 
 	if err != nil {
 		return err
@@ -67,51 +66,55 @@ func start() error {
 		}
 	}
 
+	// cmdsMap does not sort iteration order
+	// I want to run with this order: cmd1, cmd2, ...
+	// I will sort keys and maitain them on a paralel variable sortedKeys
 	for k := range initCmds.cmdsMap {
 		initCmds.sortedKeys = append(initCmds.sortedKeys, k)
 	}
 	sort.Strings(initCmds.sortedKeys)
 
-	err = run(&initCmds)
-	fmt.Println(err)
+	if isToRunOnStartup {
+		fmt.Println("Running init commands:")
+		err = run(&initCmds)
+		fmt.Println(err)
+	}
 
-	/*
-		fmt.Println("Press \n" +
-			"(r) to run\n" +
-			"(x) to exit")
+	fmt.Println("Press \n" +
+		"(r + ENTER) to run\n" +
+		"(x + ENTER) to exit")
 
-		var cmd int
-		fmt.Scanf("%c", &cmd)
+	var cmd int
+	fmt.Scanf("%c", &cmd)
 
-		if err != nil {
-			return err
-		}
+	if err != nil {
+		return err
+	}
 
-		switch cmd {
-		case 'x':
-			return nil
-		case 'r':
-			return run(&initCmds)
+	switch cmd {
+	case 'x':
+		return nil
+	case 'r':
+		return run(&initCmds)
 
-		}
-	*/
+	}
 	return nil
 }
 
 func run(initCmds *InitCmdsStruct) error {
 
-	fmt.Println("run")
+	for _, key := range initCmds.sortedKeys {
 
-	for key, value := range initCmds.cmdsMap {
-
-		fmt.Printf("key %s value %s\n", key, value)
+		value := initCmds.cmdsMap[key]
+		fmt.Printf("Exec %s = %s\n", key, value)
 		//cmd := exec.Command("C:\\Windows\\SysWOW64\\cmd.exe", "/c", "dir", ">>", "d:\\lixo.txt")
 		cmd := exec.Command("C:\\Windows\\SysWOW64\\cmd.exe", "/c", value)
 		output, err := cmd.CombinedOutput()
 		if err != nil {
-			return fmt.Errorf("%v\n%s", err, output)
+			fmt.Errorf("%v\n%s", err, output)
+		} else {
+			printOutput(output)
 		}
-		printOutput(output)
 		fmt.Println("sleep")
 		time.Sleep(time.Duration(initCmds.delay) * time.Second)
 
